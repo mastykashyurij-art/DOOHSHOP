@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dooh Shop — Serwis Samochodowy Kraków</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #080808;
+      --dark:       #0e0e0e;
+      --card:       #111111;
+      --card-hover: #161616;
+      --red:        #C01C2C;
+      --red-bright: #E0202F;
+      --white:      #FFFFFF;
+      --off-white:  #E0E0E0;
+      --gray:       #777777;
+      --gray-lt:    #AAAAAA;
+      --border:     #1C1C1C;
+      --border-lt:  #2A2A2A;
+    }
+
+    html { scroll-behavior: smooth; background: var(--black); }
+
+    body {
+      background: transparent;
+      color: var(--white);
+      font-family: 'Inter', -apple-system, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ════════════════════════════════
+       NAV
+    ════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(240, 238, 235, 0.88);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      transition: background 0.5s ease, backdrop-filter 0.5s ease, box-shadow 0.5s ease;
+    }
+    #nav.scrolled {
+      background: rgba(8, 8, 8, 0.94);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      box-shadow: 0 1px 0 var(--border);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .logo-w { color: #111111; }
+    .logo-r { color: var(--red); }
+    #nav.scrolled .logo-w { color: var(--white); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.25rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #111111;
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--red); }
+    #nav.scrolled .nav-links a {
+      color: rgba(255,255,255,0.45);
+    }
+    #nav.scrolled .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--red);
+      color: var(--white) !important;
+      padding: 0.65rem 1.6rem;
+      font-size: 0.68rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.18em !important;
+      transition: background 0.2s !important;
+      opacity: 1 !important;
+    }
+    .nav-cta:hover { background: var(--red-bright) !important; }
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+    }
+    #hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .hero-bottom-vignette {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 280px;
+      background: linear-gradient(to bottom, transparent, var(--black));
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-red-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--red);
+      z-index: 2;
+    }
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.75rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .scroll-cue-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .scroll-cue-track {
+      width: 1px;
+      height: 52px;
+      background: rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-cue-track::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: 0;
+      width: 1px;
+      height: 60%;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.7));
+      animation: scrollDrop 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes scrollDrop {
+      0%   { top: -60%; opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { top: 160%; opacity: 0; }
+    }
+
+    /* ════════════════════════════════
+       SHARED SECTION STYLES
+    ════════════════════════════════ */
+    section { padding: 8rem 4rem; }
+
+    .wrap { max-width: 1440px; margin: 0 auto; }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1.1rem;
+    }
+    .eyebrow-line {
+      width: 28px;
+      height: 2px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+    .eyebrow-text {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    .h-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      letter-spacing: 0.025em;
+      line-height: 0.9;
+      color: var(--white);
+    }
+
+    /* ════════════════════════════════
+       SERVICES
+    ════════════════════════════════ */
+    #services { background: rgba(14,14,14,0.82); }
+
+    .svc-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 4rem;
+      margin-bottom: 4.5rem;
+    }
+    .svc-header-desc {
+      max-width: 400px;
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: var(--gray);
+    }
+
+    .svc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--border);
+      gap: 1px;
+    }
+    .svc-card {
+      background: var(--card);
+      padding: 0;
+      min-height: 480px;
+      border-top: 2.5px solid transparent;
+      transition: border-color 0.35s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .svc-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.58) 45%, rgba(0,0,0,0.12) 100%);
+      z-index: 1;
+      transition: background 0.35s;
+    }
+    .svc-card:hover {
+      border-color: var(--red);
+    }
+    .svc-card:hover::after {
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 100%);
+    }
+    .svc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5.5rem;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      margin-bottom: 1.25rem;
+      transition: color 0.35s;
+      user-select: none;
+    }
+    .svc-card:hover .svc-num { color: rgba(192,28,44,0.07); }
+
+    .svc-icon {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      transition: border-color 0.35s, background 0.35s;
+    }
+    .svc-card:hover .svc-icon {
+      border-color: var(--red);
+      background: rgba(192,28,44,0.08);
+    }
+    .svc-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--red);
+      stroke-width: 1.5;
+      fill: none;
+    }
+    .svc-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.9rem;
+      line-height: 1.05;
+    }
+    .svc-card p {
+      font-size: 0.8rem;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+    .svc-card-img {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .svc-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(30%) contrast(108%);
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1), filter 0.45s;
+    }
+    .svc-card:hover .svc-card-img img {
+      transform: scale(1.06);
+      filter: grayscale(0%) contrast(115%);
+    }
+    .svc-card-content {
+      position: relative;
+      z-index: 2;
+      padding: 3.5rem 2.75rem 3rem;
+    }
+
+    /* ════════════════════════════════
+       ABOUT
+    ════════════════════════════════ */
+    #about { background: rgba(8,8,8,0.82); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: center;
+    }
+    .about-text .h-display { margin-bottom: 2.25rem; }
+    .about-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--gray);
+      margin-bottom: 1.2rem;
+    }
+    .about-text p:last-of-type { margin-bottom: 0; }
+    .about-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: 1.5px solid var(--red);
+      color: var(--red);
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.25rem;
+      margin-top: 2.5rem;
+      transition: background 0.25s, color 0.25s;
+    }
+    .about-cta:hover { background: var(--red); color: var(--white); }
+    .about-cta svg { width: 14px; height: 14px; }
+
+    .about-visual-wrap {
+      position: relative;
+    }
+    .about-visual-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -1.5rem 1.5rem 1.5rem -1.5rem;
+      border: 1.5px solid rgba(192,28,44,0.3);
+      pointer-events: none;
+    }
+    .about-visual-wrap img {
+      width: 100%;
+      display: block;
+      filter: grayscale(20%) contrast(108%);
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      background: var(--red);
+      padding: 1.4rem 1.8rem;
+      line-height: 1;
+    }
+    .about-badge strong {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 0.03em;
+    }
+    .about-badge span {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    /* ════════════════════════════════
+       WHY US
+    ════════════════════════════════ */
+    #why { background: #0b0b0b; }
+
+    .why-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: end;
+      margin-bottom: 4.5rem;
+    }
+    .why-header p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--gray);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border-lt);
+      margin-bottom: 4.5rem;
+    }
+    .stat-cell {
+      padding: 3rem 2.25rem;
+      border-right: 1px solid var(--border-lt);
+      text-align: center;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.25rem;
+      color: var(--red);
+      letter-spacing: 0.03em;
+      line-height: 1;
+    }
+    .stat-lbl {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 0.6rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.75rem 5rem;
+    }
+    .feature-item {
+      display: flex;
+      gap: 1.1rem;
+    }
+    .feature-dot {
+      flex-shrink: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      margin-top: 0.5rem;
+    }
+    .feature-item h4 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: var(--off-white);
+    }
+    .feature-item p {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--gray);
+    }
+
+    /* ════════════════════════════════
+       GALLERY
+    ════════════════════════════════ */
+    #gallery { background: rgba(14,14,14,0.82); }
+
+    .gallery-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+    .gallery-note {
+      font-size: 0.72rem;
+      color: var(--border-lt);
+      letter-spacing: 0.1em;
+      font-style: italic;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: 300px 300px;
+      gap: 2px;
+    }
+    .g-cell {
+      overflow: hidden;
+      position: relative;
+      background: #0a0a0a;
+    }
+    .g-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(30%) contrast(106%);
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1), filter 0.45s;
+    }
+    .g-cell:hover img {
+      transform: scale(1.07);
+      filter: grayscale(0%) contrast(112%);
+    }
+    .g-lbl {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.82), transparent);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .g-cell:hover .g-lbl { opacity: 1; }
+
+    .gc1 { grid-column: span 5; }
+    .gc2 { grid-column: span 4; }
+    .gc3 { grid-column: span 3; }
+    .gc4 { grid-column: span 3; }
+    .gc5 { grid-column: span 5; }
+    .gc6 { grid-column: span 4; }
+
+    /* ════════════════════════════════
+       TESTIMONIALS
+    ════════════════════════════════ */
+    #testimonials { background: rgba(8,8,8,0.82); }
+
+    .test-head { margin-bottom: 3.5rem; }
+
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--border);
+      gap: 1px;
+    }
+    .test-card {
+      background: var(--card);
+      padding: 3rem 2.75rem;
+    }
+    .test-qmark {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 6rem;
+      line-height: 0.75;
+      color: rgba(192,28,44,0.2);
+      display: block;
+      margin-bottom: 1.5rem;
+      user-select: none;
+    }
+    .test-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 1.25rem;
+    }
+    .test-stars svg {
+      width: 13px;
+      height: 13px;
+      fill: var(--red);
+    }
+    .test-card blockquote {
+      font-size: 0.875rem;
+      line-height: 1.85;
+      color: #c8c8c8;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+    .test-author strong {
+      display: block;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .test-author span {
+      font-size: 0.72rem;
+      color: var(--gray);
+      margin-top: 0.15rem;
+      display: block;
+    }
+
+    /* ════════════════════════════════
+       CONTACT
+    ════════════════════════════════ */
+    #contact { background: rgba(14,14,14,0.82); text-align: center; }
+
+    .contact-wrap { max-width: 680px; margin: 0 auto; }
+    .contact-wrap .eyebrow { justify-content: center; }
+    .contact-wrap .h-display { margin-bottom: 1.25rem; }
+    .contact-wrap > p {
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: var(--gray);
+      margin-bottom: 3.5rem;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border-lt);
+      padding: 3.5rem 3rem;
+      margin-bottom: 2rem;
+    }
+    .phone-link {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.75rem, 5vw, 4.5rem);
+      letter-spacing: 0.07em;
+      color: var(--white);
+      text-decoration: none;
+      line-height: 1;
+      transition: color 0.25s;
+    }
+    .phone-link:hover { color: var(--red); }
+    .phone-lbl {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 0.5rem;
+    }
+    .contact-sep {
+      width: 1px;
+      height: 40px;
+      background: var(--border-lt);
+      margin: 2rem auto;
+    }
+    .contact-addr {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+    }
+    .contact-btn {
+      display: inline-block;
+      background: var(--red);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 1.1rem 3.5rem;
+      transition: background 0.25s;
+    }
+    .contact-btn:hover { background: var(--red-bright); }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    footer {
+      background: rgba(8,8,8,0.82);
+      border-top: 1px solid var(--border);
+      padding: 1.75rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    footer .logo { font-size: 1.4rem; }
+    .footer-right {
+      text-align: right;
+    }
+    .footer-right p {
+      font-size: 0.7rem;
+      color: var(--gray);
+      letter-spacing: 0.1em;
+      line-height: 1.7;
+    }
+
+    /* ════════════════════════════════
+       SERVICE CARD HOVER SCALE
+    ════════════════════════════════ */
+    .svc-grid {
+      overflow: visible;
+    }
+    .svc-card {
+      transition: border-color 0.35s, transform 0.45s cubic-bezier(0.4,0,0.2,1), z-index 0s;
+      z-index: 1;
+    }
+    .svc-card:hover {
+      transform: scale(1.5);
+      z-index: 10;
+    }
+    /* ════════════════════════════════
+       LIGHTBOX
+    ════════════════════════════════ */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 800;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #lightbox.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+      transform: scale(0.94);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+    }
+    #lightbox.active img {
+      transform: scale(1);
+    }
+    /* ════════════════════════════════
+       BACKGROUND CANVAS
+    ════════════════════════════════ */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════ -->
+<canvas id="bg-canvas"></canvas>
+
+<nav id="nav">
+  <a href="#hero" class="logo"><span class="logo-w">DOOH</span><span class="logo-r">SHOP</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Usługi</a></li>
+    <li><a href="#about">O nas</a></li>
+    <li><a href="#why">Dlaczego my</a></li>
+    <li><a href="#gallery">Galeria</a></li>
+    <li><a href="#testimonials">Opinie</a></li>
+    <li><a href="#contact" class="nav-cta">Umów wizytę</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ═════════════════════════════════════════════ -->
+<section id="hero">
+  <video autoplay loop muted playsinline>
+    <source src="FORD2VID.mp4" type="video/mp4">
+  </video>
+  <div class="hero-bottom-vignette"></div>
+  <div class="hero-red-bar"></div>
+  <div class="scroll-cue">
+    <span class="scroll-cue-label">Przewiń</span>
+    <div class="scroll-cue-track"></div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══════════════════════════════════════════ -->
+<section id="services">
+  <div class="wrap">
+    <div class="svc-header">
+      <div>
+        <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Co robimy</span></div>
+        <h2 class="h-display">NASZE<br>USŁUGI</h2>
+      </div>
+      <p class="svc-header-desc">Od precyzyjnych napraw mechanicznych po detailing na poziomie salonu — każda usługa w Dooh Shop wykonywana jest z taką samą dbałością o szczegóły.</p>
+    </div>
+    <div class="svc-grid">
+
+      <div class="svc-card">
+        <div class="svc-card-img"><img src="pic1.png" alt="Mechanical Repairs"></div>
+        <div class="svc-card-content">
+          <div class="svc-num">01</div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437"/>
+            </svg>
+          </div>
+          <h3>Naprawy<br>Mechaniczne</h3>
+          <p>Diagnostyka silnika, zawieszenie, hamulce i wszystko pomiędzy. Naprawiamy porządnie za pierwszym razem — zawsze.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-card-img"><img src="pic2.png" alt="Diagnostics & Fix"></div>
+        <div class="svc-card-content">
+          <div class="svc-num">02</div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 3.75H6.912a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859M12 3v8.25m0 0l-3-3m3 3l3-3"/>
+            </svg>
+          </div>
+          <h3>Diagnostyka<br>i Naprawa</h3>
+          <p>Najnowocześniejsza elektroniczna diagnostyka do precyzyjnego wykrywania usterek. Identyfikujemy problem — a następnie go rozwiązujemy.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-card-img"><img src="pic3.png" alt="Professional Detailing"></div>
+        <div class="svc-card-content">
+          <div class="svc-num">03</div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"/>
+            </svg>
+          </div>
+          <h3>Profesjonalny<br>Detailing</h3>
+          <p>Kompleksowy detailing wnętrza i nadwozia przywracający pojazdowi wygląd przyciągający wzrok i zachowujący wartość.</p>
+        </div>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-card-img"><img src="pic4.png" alt="Paint Polishing"></div>
+        <div class="svc-card-content">
+          <div class="svc-num">04</div>
+          <div class="svc-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
+            </svg>
+          </div>
+          <h3>Polerowanie<br>Lakieru</h3>
+          <p>Polerowanie maszynowe, korekta lakieru i powłoka ceramiczna dla idealnie lustrzanego wykończenia na lata.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ═════════════════════════════════════════════ -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Nasza historia</span></div>
+        <h2 class="h-display">ZBUDOWANI<br>NA PRECYZJI</h2>
+        <p>Dooh Shop powstał z jednego przekonania: każde auto zasługuje na fachową opiekę, a każdy właściciel na pełną przejrzystość. Jesteśmy zespołem pasjonatów motoryzacji działającym w sercu Krakowa.</p>
+        <p>Od złożonych napraw mechanicznych po bezbłędne korekty lakieru — do każdego pojazdu, który do nas trafia, podchodzimy z takim samym niezłomnym zaangażowaniem.</p>
+        <p>Nie tylko serwisujemy samochody. Dbamy o nie.</p>
+        <a href="#contact" class="about-cta">
+          Umów serwis
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+      <div class="about-visual-wrap">
+        <img src="VEHICLEBLUEPRINT.png" alt="Blueprint — Dooh Shop precision engineering">
+        <div class="about-badge">
+          <strong>10+</strong>
+          <span>Lat doskonałości</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY US ═════════════════════════════════════════════ -->
+<section id="why">
+  <div class="wrap">
+    <div class="why-header">
+      <div>
+        <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Dlaczego my</span></div>
+        <h2 class="h-display">DOOH<br>RÓŻNICA</h2>
+      </div>
+      <p>Łączymy wiedzę techniczną z prawdziwą troską o każdy pojazd. W Dooh Shop jakość nie jest hasłem reklamowym — to standard, według którego mierzona jest każda praca, bez wyjątku.</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-cell">
+        <span class="stat-num">500+</span>
+        <span class="stat-lbl">Obsłużonych aut</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">10+</span>
+        <span class="stat-lbl">Lat doświadczenia</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">100%</span>
+        <span class="stat-lbl">Zadowolonych klientów</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-num">4</span>
+        <span class="stat-lbl">Główne usługi</span>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div><h4>Przejrzyste ceny</h4><p>Żadnych ukrytych kosztów. Akceptujesz każdą naprawę zanim zaczniemy.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div><h4>Certyfikowani technicy</h4><p>Nasz zespół posiada profesjonalne certyfikaty i stale się szkoli.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div><h4>Nowoczesny sprzęt</h4><p>Inwestujemy w najnowsze technologie diagnostyczne i warsztatowe.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div><h4>Szybka realizacja</h4><p>Szanujemy Twój czas. Większość prac kończymy tego samego dnia.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div><h4>Wszystkie marki i modele</h4><p>Pojazdy europejskie, amerykańskie, azjatyckie — pracujemy przy wszystkich.</p></div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div><h4>Gwarancja jakości</h4><p>Każda naprawa objęta naszą gwarancją jakości. Proste jak to.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GALLERY ════════════════════════════════════════════ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="gallery-head">
+      <div>
+        <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Nasze realizacje</span></div>
+        <h2 class="h-display">GALERIA</h2>
+      </div>
+      <span class="gallery-note">Wybrane pojazdy z naszego warsztatu</span>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-cell gc1">
+        <img src="Mercedesimage.png" alt="Mercedes" style="object-position: center center;">
+        <div class="g-lbl">Mercedes</div>
+      </div>
+      <div class="g-cell gc2">
+        <img src="CorvetteVS8BACK.png" alt="Corvette" style="object-position: center center;">
+        <div class="g-lbl">Corvette</div>
+      </div>
+      <div class="g-cell gc3">
+        <img src="FORDIMAGE.jpg" alt="Ford Fusion" style="object-position: center center;">
+        <div class="g-lbl">Ford Fusion</div>
+      </div>
+      <div class="g-cell gc4">
+        <img src="BMWX8.png" alt="BMW X8" style="object-position: center center;">
+        <div class="g-lbl">BMW X8</div>
+      </div>
+      <div class="g-cell gc5">
+        <img src="AUDIRS5.png" alt="Audi RS5" style="object-position: center center;">
+        <div class="g-lbl">Audi RS5</div>
+      </div>
+      <div class="g-cell gc6">
+        <img src="LEXUSLS2026.png" alt="Lexus LS 2026" style="object-position: center center;">
+        <div class="g-lbl">LEXUS LS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="wrap">
+    <div class="test-head">
+      <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Opinie klientów</span></div>
+      <h2 class="h-display">CO MÓWIĄ<br>KLIENCI</h2>
+    </div>
+    <div class="test-grid">
+
+      <div class="test-card">
+        <span class="test-qmark">"</span>
+        <div class="test-stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <blockquote>„Oddałem Audi do pełnego detailingu i polerowania maszynowego — efekt był naprawdę niesamowity. Widać, że ci ludzie kochają to co robią. Każda powierzchnia traktowana jak ważna. Warte każdego złotego."</blockquote>
+        <div class="test-author">
+          <strong>Marek Wiśniewski</strong>
+          <span>Kraków</span>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <span class="test-qmark">"</span>
+        <div class="test-stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <blockquote>„Miałem skomplikowaną usterkę silnika, której dwa inne warsztaty nie potrafiły zdiagnozować. Dooh Shop znalazł ją w ciągu godziny i tego samego dnia wróciłem na drogę. Wyjątkowe umiejętności i profesjonalizm."</blockquote>
+        <div class="test-author">
+          <strong>Katarzyna Nowak</strong>
+          <span>Kraków</span>
+        </div>
+      </div>
+
+      <div class="test-card">
+        <span class="test-qmark">"</span>
+        <div class="test-stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <blockquote>„Profesjonalizm tutaj jest niespotykany w żadnym innym warsztacie w Krakowie. Czyste miejsce, uczciwe ceny, a efekt polerowania był niesamowity. Mój samochód wyglądał lepiej niż w dniu zakupu."</blockquote>
+        <div class="test-author">
+          <strong>Tomasz Jabłoński</strong>
+          <span>Kraków</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="eyebrow" style="justify-content:center"><div class="eyebrow-line"></div><span class="eyebrow-text">Skontaktuj się</span></div>
+      <h2 class="h-display">UMÓW SWÓJ<br>SERWIS</h2>
+      <p>Gotowy dać swojemu samochodowi opiekę, na jaką zasługuje? Zadzwoń do nas bezpośrednio lub wpadnij do naszego warsztatu w Krakowie. Zajmiemy się resztą.</p>
+      <div class="contact-card">
+        <a href="tel:+48883421339" class="phone-link">+48 883 421 339</a>
+        <span class="phone-lbl">Zadzwoń i umów wizytę</span>
+        <div class="contact-sep"></div>
+        <p class="contact-addr">Dooh Shop &nbsp;·&nbsp; Kraków, Polska</p>
+      </div>
+      <a href="tel:+48883421339" class="contact-btn">Zadzwoń</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════ -->
+<footer>
+  <a href="#hero" class="logo"><span class="logo-w">DOOH</span><span class="logo-r">SHOP</span></a>
+  <div class="footer-right">
+    <p>© 2025 Dooh Shop. Wszelkie prawa zastrzeżone.</p>
+    <p>Kraków, Polska</p>
+  </div>
+</footer>
+
+<div id="lightbox"><img id="lightboxImg" src="" alt=""></div>
+
+<script>
+/* ── Background particle animation ───────────────────────── */
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  /* ── Shape helpers ── */
+
+  function drawWrench(ctx, r) {
+    /* handle */
+    ctx.fillRect(-r * 0.13, -r * 0.1, r * 0.26, r * 1.1);
+    /* top jaw open-end */
+    ctx.beginPath();
+    ctx.arc(0, -r * 0.1, r * 0.38, 0, Math.PI * 2);
+    ctx.fill();
+    /* bottom box-end (hex socket) */
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 - Math.PI / 6;
+      i === 0 ? ctx.moveTo(Math.cos(a) * r * 0.38 + 0, Math.sin(a) * r * 0.38 + r)
+              : ctx.lineTo(Math.cos(a) * r * 0.38 + 0, Math.sin(a) * r * 0.38 + r);
+    }
+    ctx.closePath();
+    ctx.fill();
+    /* punch holes */
+    ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(0, -r * 0.1, r * 0.21, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(0, r, r * 0.21, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawGear(ctx, r) {
+    const teeth = 8, inner = r * 0.65, step = (Math.PI * 2) / teeth;
+    ctx.beginPath();
+    for (let i = 0; i < teeth; i++) {
+      const a = i * step;
+      ctx.lineTo(Math.cos(a - step * 0.22) * inner, Math.sin(a - step * 0.22) * inner);
+      ctx.lineTo(Math.cos(a - step * 0.22) * r,     Math.sin(a - step * 0.22) * r);
+      ctx.lineTo(Math.cos(a + step * 0.22) * r,     Math.sin(a + step * 0.22) * r);
+      ctx.lineTo(Math.cos(a + step * 0.22) * inner, Math.sin(a + step * 0.22) * inner);
+    }
+    ctx.closePath(); ctx.fill();
+    ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.30, 0, Math.PI * 2); ctx.fill();
+    /* spokes */
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
+      ctx.save(); ctx.rotate(a);
+      ctx.fillRect(-r * 0.08, r * 0.30, r * 0.16, r * 0.34);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  function drawBrakeDisc(ctx, r) {
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+    ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1;
+    /* center hub */
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.32, 0, Math.PI * 2); ctx.fill();
+    /* 5 bolt holes */
+    for (let i = 0; i < 5; i++) {
+      const a = (i / 5) * Math.PI * 2;
+      ctx.beginPath(); ctx.arc(Math.cos(a) * r * 0.62, Math.sin(a) * r * 0.62, r * 0.11, 0, Math.PI * 2); ctx.fill();
+    }
+    /* ventilation slots */
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2;
+      ctx.save(); ctx.rotate(a);
+      ctx.fillRect(-r * 0.06, r * 0.38, r * 0.12, r * 0.22);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  function drawPiston(ctx, r) {
+    /* skirt */
+    ctx.fillRect(-r * 0.52, -r * 0.05, r * 1.04, r * 0.85);
+    /* crown dome */
+    ctx.beginPath();
+    ctx.ellipse(0, -r * 0.05, r * 0.52, r * 0.28, 0, Math.PI, 0);
+    ctx.fill();
+    /* wrist-pin boss cutouts */
+    ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(-r * 0.52, r * 0.38, r * 0.18, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc( r * 0.52, r * 0.38, r * 0.18, 0, Math.PI * 2); ctx.fill();
+    /* ring grooves */
+    ctx.fillRect(-r * 0.52, r * 0.08, r * 1.04, r * 0.07);
+    ctx.fillRect(-r * 0.52, r * 0.22, r * 1.04, r * 0.07);
+    ctx.restore();
+  }
+
+  function drawExhaust(ctx, r) {
+    /* pipe cross-section — oval ring */
+    ctx.save();
+    ctx.scale(1.0, 0.55);
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    /* punch inner hole */
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1;
+    ctx.save(); ctx.scale(1.0, 0.55);
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.62, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    ctx.restore();
+    /* flange bolts drawn separately after restore */
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
+      ctx.beginPath();
+      ctx.arc(Math.cos(a) * r * 1.1, Math.sin(a) * r * 0.58, r * 0.12, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawNut(ctx, r) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 - Math.PI / 6;
+      i === 0 ? ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r)
+              : ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+    }
+    ctx.closePath(); ctx.fill();
+    ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.40, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  const SHAPES = [drawWrench, drawGear, drawBrakeDisc, drawPiston, drawExhaust, drawNut];
+
+  /* Grey, dark grey, dark red only */
+  const PALETTE = [
+    [ 90,  90,  90],   /* grey         — wrench      */
+    [155,  18,  26],   /* dark red      — gear        */
+    [ 55,  55,  55],   /* dark grey     — brake disc  */
+    [120, 120, 120],   /* mid grey      — piston      */
+    [160,  18,  26],   /* dark red      — exhaust     */
+    [ 70,  70,  70],   /* dark grey     — hex nut     */
+  ];
+
+  class Particle {
+    constructor(scatter) { this.init(scatter); }
+    init(scatter) {
+      this.type  = Math.floor(Math.random() * SHAPES.length);
+      this.size  = Math.random() * 12 + 7;
+      this.x     = Math.random() * W;
+      this.y     = scatter ? Math.random() * H : H + this.size + 10;
+      this.vy    = Math.random() * 3.2 + 1.8;   /* fast upward: 1.8 – 5.0 px/frame */
+      this.vx    = (Math.random() - 0.5) * 0.6;
+      this.rot   = Math.random() * Math.PI * 2;
+      this.rotV  = (Math.random() - 0.5) * 0.055;
+      this.alpha = Math.random() * 0.40 + 0.25;  /* 0.25 – 0.65 */
+      const [r, g, b] = PALETTE[this.type];
+      this.fill  = `rgba(${r},${g},${b},1)`;
+    }
+    update() {
+      this.y   -= this.vy;
+      this.x   += this.vx;
+      this.rot += this.rotV;
+      if (this.y < -this.size - 10) this.init(false);
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rot);
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle   = this.fill;
+      SHAPES[this.type](ctx, this.size);
+      ctx.restore();
+    }
+  }
+
+  const particles = Array.from({ length: 110 }, () => new Particle(true));
+
+  let rafId;
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of particles) { p.update(); p.draw(); }
+    rafId = requestAnimationFrame(loop);
+  }
+
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!mq.matches) loop();
+  mq.addEventListener('change', e => {
+    if (e.matches) { cancelAnimationFrame(rafId); ctx.clearRect(0, 0, W, H); }
+    else loop();
+  });
+})();
+
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Gallery lightbox
+  const lightbox    = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+
+  document.querySelectorAll('.g-cell img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', e => {
+      e.stopPropagation();
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  lightbox.addEventListener('click', e => {
+    if (e.target !== lightboxImg) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
